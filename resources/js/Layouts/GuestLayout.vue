@@ -1,7 +1,7 @@
 <template>
   <div class="border-b">
     <nav class="max-w-7xl mx-auto flex justify-between items-center py-4 px-4">
-      <div class="text-cyan-600 text-xl font-semibold">MedList</div>
+      <Link :href="route('home')" class="text-cyan-600 text-xl font-semibold">MedList</Link>
       <div class="flex gap-4 items-center text-gray-500 ">
         <Link :href="route('login')" class="hover:text-gray-600">Login</Link>
         <Link :href="route('register')" class="hover:text-gray-600">Register</Link>
