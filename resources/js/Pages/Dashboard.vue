@@ -1,8 +1,10 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { format, parseISO } from 'date-fns'
 // import { usePage } from '@inertiajs/vue3';
 // const patients = usePage().props.patients
-// accept props from laravel controller:
+
+// accept props from laravel controller: updated_at is a string -> covert it with parseISO (could have changed it to date in controller also)
 const props = defineProps({ patients: Object })
 
 
@@ -30,7 +32,7 @@ const props = defineProps({ patients: Object })
                         <div>Show</div>
                         <div>Edit</div>
                       </div>
-                      <div class="px-2 col-span-2">{{ patient.updated_at }}</div>
+                      <div class="px-2 col-span-2 text-sm text-gray-500">{{ format(parseISO(patient.updated_at), 'dd/MM/yyyy' )}}</div>
                       <div class="text-right px-2 text-sm">Delete</div>
                     </div>
                   </div>
