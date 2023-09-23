@@ -1,11 +1,23 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { format, parseISO } from 'date-fns'
+import { ref } from "vue";
+import Modal from '@/Components/Modal.vue';
 // import { usePage } from '@inertiajs/vue3';
 // const patients = usePage().props.patients
 
 // accept props from laravel controller: updated_at is a string -> covert it with parseISO (could have changed it to date in controller also)
 const props = defineProps({ patients: Object })
+
+const showPatientModal = ref(false)
+const selectedPatient = ref(null)
+
+function openPatientData(patient) {
+  selectedPatient.value = patient
+  showPatientModal.value = true
+}
+
+const selectedDrug = ref(false)
 
 
 </script>
@@ -24,12 +36,12 @@ const props = defineProps({ patients: Object })
                   <div class="text-xl font-semibold mb-8">Patients</div>
                   <div v-for="(patient, i) in props.patients" :key="patient.id" class="max-w-fit mx-auto">
                     <div class="grid grid-cols-8 items-center leading-loose px-4 py-1" :class="[i%2 == 0 ? 'bg-gray-50' : 'bg-white']">
-                      <div class="flex gap-2 px-2 col-span-3">
+                      <div @click="openPatientData(patient)" class="flex gap-2 px-2 col-span-3 cursor-pointer">
                         <div>{{ patient.last_name }}</div>
                         <div>{{ patient.first_name }}</div>
                       </div>
                       <div class="flex gap-6 text-sm px-2 col-span-2">
-                        <div>Show</div>
+                        <div @click="openPatientData(patient)" class="cursor-pointer">Show</div>
                         <div>Edit</div>
                       </div>
                       <div class="px-2 col-span-2 text-sm text-gray-500">{{ format(parseISO(patient.updated_at), 'dd/MM/yyyy' )}}</div>
@@ -39,5 +51,35 @@ const props = defineProps({ patients: Object })
                 </div>
             </div>
         </div>
+
+         <!-- Modal Show Patient Data -->
+         <Modal :show="showPatientModal" @close="showPatientModal = null">
+            <div class="p-6 flex flex-col gap-2">
+              <div class="flex gap-2 text-semibold text-xl">
+                <div>{{ selectedPatient.first_name }}</div>
+                <div>{{ selectedPatient.last_name }}</div>
+              </div>
+              <div>Date of Birth: {{ format(parseISO(selectedPatient.dob), 'dd.MM.yyyy') }}</div>
+              <div>Health Insurance Number: {{ selectedPatient.health_insurance_number }}</div>
+              <div>Address: {{ selectedPatient.address }}</div>
+              <div>Phone Number: {{ selectedPatient.phone }}</div>
+              <div>Ilnesses: {{ selectedPatient.illness }}</div>
+              <div>Allergies: {{ selectedPatient.allergies }}</div>
+              <div>Emergency Contact: {{ selectedPatient.emergency_contact }}</div>
+              <div class="text-xl font-bold mt-4">Drugs</div>
+              <div v-for="(drug, i) in selectedPatient.drugs" :key="drug.id">
+                <div @click="selectedDrug = !selectedDrug">{{ i+1 }}. {{ drug.name }} {{ drug.concentration }}, <span class="text-sm text-gray-500">{{ drug.active_ingredient }}</span></div>
+                <div v-show="selectedDrug" class="text-sm text-gray-600 px-4 flex gap-2">
+                  <div v-if="drug.dosage_custom">{{ drug.dosage_custom }}</div>
+                  <div v-if="drug.dosage_morning">Morning: {{ drug.dosage_morning }} {{ drug.unit }} | </div>
+                  <div v-if="drug.dosage_midday">Midday: {{ drug.dosage_midday }} {{ drug.unit }} | </div>
+                  <div v-if="drug.dosage_evening">Evening: {{ drug.dosage_evening }} {{ drug.unit }}</div>
+                </div>
+              </div>
+            </div>
+          </Modal>
+
+
     </AppLayout>
 </template>
+n, 'active_ingredient', 'dosage_custom', 'dosage_morning', 'dosage_midday', 'dosage_evening', 'unit',
