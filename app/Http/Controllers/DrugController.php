@@ -27,4 +27,11 @@ class DrugController extends Controller
 
       return back();
     }
+
+    public function destroy(Patient $patient, Drug $drug){
+      // dd('controller delete');
+      $drug->delete(); // deletes from patient, because deletes patient_id
+
+      return back();
+    }
 }
