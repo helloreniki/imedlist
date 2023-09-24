@@ -1,9 +1,9 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { Link } from '@inertiajs/vue3'
 import { format, parseISO } from 'date-fns'
 import { onMounted, ref, watch } from "vue";
 import Modal from '@/Components/Modal.vue';
-import PatientData from '@/Parts/PatientData.vue';
 import DrugForm from '@/Parts/DrugForm.vue'
 
 // import { usePage } from '@inertiajs/vue3';
@@ -12,22 +12,6 @@ import DrugForm from '@/Parts/DrugForm.vue'
 // accept props from laravel controller: updated_at is a string -> covert it with parseISO (could have changed it to date in controller also)
 const props = defineProps({ patients: Object })
 
-const showPatientModal = ref(false)
-const selectedPatient = ref(null)
-
-function openPatientData(patient) {
-  selectedPatient.value = patient
-  showPatientModal.value = true
-}
-
-const showDrugCreateModal = ref(false)
-
-// when u open PatientModal -> it is focused (set in PatentData.vue),
-// if u open another modal DrugModal -> this one is focused (set in DrugForm.vue)
-// when u close DrugModal -> nth is focused, cant close PatientModal with Esc =>
-// @close event, set isPatientModalFocused to true, and send it with props to PatientData
-// and focus it again (watch isFocused, if it is true -> focus patientData)
-const isPatientModalFocused = ref(false)
 
 </script>
 
@@ -45,12 +29,12 @@ const isPatientModalFocused = ref(false)
                   <div class="text-xl font-semibold mb-8">Patients</div>
                   <div v-for="(patient, i) in props.patients" :key="patient.id" class="max-w-fit mx-auto">
                     <div class="grid grid-cols-8 items-center leading-loose px-4 py-1" :class="[i%2 == 0 ? 'bg-gray-50' : 'bg-white']">
-                      <div @click="openPatientData(patient)" class="flex gap-2 px-2 col-span-3 cursor-pointer">
+                      <Link :href="route('patient.show', patient)" class="flex gap-2 px-2 col-span-3 cursor-pointer">
                         <div>{{ patient.last_name }}</div>
                         <div>{{ patient.first_name }}</div>
-                      </div>
+                      </Link>
                       <div class="flex gap-6 text-sm px-2 col-span-2">
-                        <div @click="openPatientData(patient)" class="cursor-pointer">Show</div>
+                        <Link :href="route('patient.show', patient)" class="cursor-pointer">Show</Link>
                         <div>Edit</div>
                       </div>
                       <div class="px-2 col-span-2 text-sm text-gray-500">{{ format(parseISO(patient.updated_at), 'dd/MM/yyyy' )}}</div>
@@ -60,15 +44,6 @@ const isPatientModalFocused = ref(false)
                 </div>
             </div>
         </div>
-
-        <!-- Modal Show Patient Data -->
-        <Modal :show="showPatientModal" @close="showPatientModal = null" >
-         <PatientData :patient="selectedPatient" :isFocused="isPatientModalFocused" @openDrugModal="showDrugCreateModal = true" />
-        </Modal>
-
-        <Modal :show="showDrugCreateModal" @close="showDrugCreateModal = false; isPatientModalFocused = true">
-          <DrugForm ref="drugModal" />
-        </Modal>
 
     </AppLayout>
 </template>
