@@ -3,7 +3,9 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import { format, parseISO } from 'date-fns'
 import { onMounted, ref, watch } from "vue";
 import Modal from '@/Components/Modal.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
+import PatientData from '@/Parts/PatientData.vue';
+import DrugForm from '@/Parts/DrugForm.vue'
+
 // import { usePage } from '@inertiajs/vue3';
 // const patients = usePage().props.patients
 
@@ -18,28 +20,14 @@ function openPatientData(patient) {
   showPatientModal.value = true
 }
 
-const selectedDrug = ref(false)
-const showDrugCreateForm = ref(false)
+const showDrugCreateModal = ref(false)
 
-const patientModal = ref(null)
-const drugModal = ref(null)
-
-
-watch(patientModal, (newVal) => {
-  if(newVal){
-    newVal.focus()
-  }
-})
-
-watch(drugModal, (newVal) => {
-  if(newVal){
-    newVal.focus()
-  }
-})
-
-function focusOnFirstModal() {
-  patientModal.value.focus()
-}
+// when u open PatientModal -> it is focused (set in PatentData.vue),
+// if u open another modal DrugModal -> this one is focused (set in DrugForm.vue)
+// when u close DrugModal -> nth is focused, cant close PatientModal with Esc =>
+// @close event, set isPatientModalFocused to true, and send it with props to PatientData
+// and focus it again (watch isFocused, if it is true -> focus patientData)
+const isPatientModalFocused = ref(false)
 
 </script>
 
@@ -74,41 +62,13 @@ function focusOnFirstModal() {
         </div>
 
         <!-- Modal Show Patient Data -->
-        <Modal :show="showPatientModal" @close="showPatientModal = null">
-          <div ref="patientModal" tabindex="0" class="p-6 flex flex-col gap-2">
-            <div class="flex gap-2 text-semibold text-xl">
-              <div>{{ selectedPatient.first_name }}</div>
-              <div>{{ selectedPatient.last_name }}</div>
-            </div>
-            <div>Date of Birth: {{ format(parseISO(selectedPatient.dob), 'dd.MM.yyyy') }}</div>
-            <div>Health Insurance Number: {{ selectedPatient.health_insurance_number }}</div>
-            <div>Address: {{ selectedPatient.address }}</div>
-            <div>Phone Number: {{ selectedPatient.phone }}</div>
-            <div>Ilnesses: {{ selectedPatient.illness }}</div>
-            <div>Allergies: {{ selectedPatient.allergies }}</div>
-            <div>Emergency Contact: {{ selectedPatient.emergency_contact }}</div>
-            <div class="text-xl font-bold mt-4">Drugs</div>
-            <PrimaryButton @click="showDrugCreateForm = true" type="button" class="self-start">Add New Drug</PrimaryButton>
-            <div v-for="(drug, i) in selectedPatient.drugs" :key="drug.id">
-              <div @click="selectedDrug = !selectedDrug">{{ i+1 }}. {{ drug.name }} {{ drug.concentration }}, <span class="text-sm text-gray-500">{{ drug.active_ingredient }}</span></div>
-              <div v-show="selectedDrug" class="text-sm text-gray-600 px-4 flex gap-2">
-                <div v-if="drug.dosage_custom">{{ drug.dosage_custom }}</div>
-                <div v-if="drug.dosage_morning">Morning: {{ drug.dosage_morning }} {{ drug.unit }} | </div>
-                <div v-if="drug.dosage_midday">Midday: {{ drug.dosage_midday }} {{ drug.unit }} | </div>
-                <div v-if="drug.dosage_evening">Evening: {{ drug.dosage_evening }} {{ drug.unit }}</div>
-              </div>
-            </div>
-          </div>
+        <Modal :show="showPatientModal" @close="showPatientModal = null" >
+         <PatientData :patient="selectedPatient" :isFocused="isPatientModalFocused" @openDrugModal="showDrugCreateModal = true" />
         </Modal>
 
-        <Modal :show="showDrugCreateForm" @close="showDrugCreateForm = false; focusOnFirstModal()">
-          <div ref="drugModal" tabindex="0" class="p-6">
-            <h2 class="text-2xl font-bold">Add New Drug</h2>
-            <input type="text">
-
-          </div>
+        <Modal :show="showDrugCreateModal" @close="showDrugCreateModal = false; isPatientModalFocused = true">
+          <DrugForm ref="drugModal" />
         </Modal>
-
 
     </AppLayout>
 </template>
