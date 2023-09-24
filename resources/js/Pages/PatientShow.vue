@@ -1,12 +1,15 @@
 <script setup>
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { ref } from 'vue';
+import { ref, toRefs } from 'vue';
 import { format, parseISO } from 'date-fns';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import DrugForm from '@/Parts/DrugForm.vue';
 import Modal from '@/Components/Modal.vue';
 
-defineProps({ patient: Object })
+const props = defineProps({ patient: Object, units: Array })
+const { patient, units } = toRefs(props)
+
+console.log(units.value)
 
 const selectedDrug = ref(false)
 
@@ -46,9 +49,8 @@ const showDrugCreateModal = ref(false)
           </div>
       </div>
     </div>
-    {{ patient }}
     <Modal :show="showDrugCreateModal" @close="showDrugCreateModal = false">
-        <DrugForm ref="drugModal" :patient="patient" />
+        <DrugForm :patient="patient" :units="units" @closeModal="showDrugCreateModal = false" />
     </Modal>
   </AppLayout>
 </template>

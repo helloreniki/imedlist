@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Drug;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 
@@ -15,13 +16,18 @@ class PatientController extends Controller
       ]);
     }
 
+    // show pacient (with his drugs)
     public function show(Patient $patient){
 
       // eager load drugs
       $patient->load('drugs');
+      $units = Drug::UNITS;
+      // dd($units);
 
       return inertia('PatientShow', [
-        'patient' => $patient
+        'patient' => $patient,
+        'units' => $units
       ]);
     }
+
 }
