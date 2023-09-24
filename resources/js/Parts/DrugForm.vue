@@ -44,8 +44,8 @@ function submitForm() {
   <div ref="drugModal" tabindex="0" class="px-12 py-8">
     <h2 class="text-2xl font-bold mb-8">Add New Drug for {{ patient.first_name }} {{ patient.last_name }}</h2>
     <form @submit.prevent="submitForm()" class="flex flex-col gap-2">
-      <div class="flex flex-col gap-2 bg-gray-50 p-2">
-        <div class="flex gap-4 bg-gray-50">
+      <div class="flex flex-col gap-2 p-2">
+        <div class="flex gap-4">
           <div class="w-3/4">
             <InputLabel value="Drug Name" />
             <TextInput v-model="form.name" />
