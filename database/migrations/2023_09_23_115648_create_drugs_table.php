@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('dosage_morning')->nullable();
             $table->string('dosage_midday')->nullable();
             $table->string('dosage_evening')->nullable();
-            $table->string('unit');
+            $table->string('unit')->nullable();
             $table->timestamps();
         });
     }

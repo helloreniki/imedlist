@@ -3,6 +3,7 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
+use App\Http\Controllers\DrugController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DashboardController;
@@ -36,4 +37,6 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [PatientController::class, 'index'])->name('dashboard');
     Route::get('/patients/{patient}', [PatientController::class, 'show'])->name('patient.show');
+    // Route::post('/patients/{patient}', [PatientController::class, 'store'])->name('patient.store');
+    Route::post('/patients/{patient}/drugs', [DrugController::class, 'store'])->name('drug.store');
 });
