@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onUnmounted, watch } from 'vue';
+import { computed, onMounted, onUnmounted, watch, ref } from 'vue';
 
 const props = defineProps({
     show: {
@@ -32,18 +32,22 @@ const close = () => {
     }
 };
 
-const closeOnEscape = (e) => {
-    if (e.key === 'Escape' && props.show) {
-        close();
-    }
-};
+// if i have 2 modals open, it runs 2times esc, 2 times props.show -> close 2 times
+// const closeOnEscape = (e) => {
+//     if (e.key === 'Escape' && props.show) {
+//         console.log(e.key)
+//         close();
+//     }
+// };
 
-onMounted(() => document.addEventListener('keydown', closeOnEscape));
 
-onUnmounted(() => {
-    document.removeEventListener('keydown', closeOnEscape);
-    document.body.style.overflow = null;
-});
+// onMounted(() => document.addEventListener('keydown', closeOnEscape));
+
+// onUnmounted(() => {
+//     document.removeEventListener('keydown', closeOnEscape);
+//     document.body.style.overflow = null;
+// });
+
 
 const maxWidthClass = computed(() => {
     return {
@@ -81,7 +85,7 @@ const maxWidthClass = computed(() => {
                     leave-from-class="opacity-100 translate-y-0 sm:scale-100"
                     leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 >
-                    <div v-show="show" class="mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto" :class="maxWidthClass">
+                    <div @keydown.esc="close()" v-show="show" class="mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto" :class="maxWidthClass">
                         <slot v-if="show" />
                     </div>
                 </transition>
