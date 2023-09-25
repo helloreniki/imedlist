@@ -1,8 +1,10 @@
 <script setup>
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import PatientCreate from '@/Pages/Patient/PatientCreate.vue'
+import PatientCreate from '@/Pages/Patient/PatientCreate.vue';
+import PatientEdit from './Patient/PatientEdit.vue';
 import Modal from '@/Components/Modal.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
 import { Link } from '@inertiajs/vue3'
 import { format, parseISO } from 'date-fns'
 import { ref } from 'vue';
@@ -14,6 +16,15 @@ import { ref } from 'vue';
 const props = defineProps({ patients: Object })
 
 const showPatientCreateModal = ref(false)
+const showPatientEditModal = ref(false)
+
+const patientToEdit = ref(null)
+
+function editPatient(patient) {
+  showPatientEditModal.value = true
+  patientToEdit.value = patient
+  console.log(patientToEdit.value)
+}
 </script>
 
 <template>
@@ -37,7 +48,7 @@ const showPatientCreateModal = ref(false)
                       </Link>
                       <div class="flex gap-6 text-sm px-2 col-span-2">
                         <Link :href="route('patient.show', patient)" class="cursor-pointer">Show</Link>
-                        <div>Edit</div>
+                        <SecondaryButton @click="editPatient(patient)">Edit</SecondaryButton>
                       </div>
                       <div class="px-2 col-span-2 text-sm text-gray-500">{{ format(parseISO(patient.updated_at), 'dd/MM/yyyy' )}}</div>
                       <div class="text-right px-2 text-sm">Delete</div>
@@ -49,6 +60,10 @@ const showPatientCreateModal = ref(false)
 
         <Modal :show="showPatientCreateModal" @close="showPatientCreateModal = false">
           <PatientCreate @patient-created="showPatientCreateModal = false"/>
+        </Modal>
+
+        <Modal :show="showPatientEditModal" @close="showPatientEditModal = false">
+          <PatientEdit :patient="patientToEdit" @patient-updated="showPatientEditModal = false" />
         </Modal>
 
 

@@ -47,4 +47,22 @@ class PatientController extends Controller
       return back();
     }
 
+    public function update(Patient $patient) {
+      $data = request()->validate([
+        'first_name' => 'required|min:2',
+        'last_name' => 'required|min:2',
+        'dob' => '',
+        'health_insurance_number' => '', // depends on the country
+        'phone' => '',
+        'address' => '',
+        'illness' => '',
+        'allergies' => '',
+      ]);
+
+      // auth()->user()->patients()->update($data); // this updates all patients
+      $patient->update($data);
+
+      return back();
+    }
+
 }
