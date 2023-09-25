@@ -5,9 +5,10 @@ import PatientCreate from '@/Pages/Patient/PatientCreate.vue';
 import PatientEdit from './Patient/PatientEdit.vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
-import { Link } from '@inertiajs/vue3'
+import { Link, router } from '@inertiajs/vue3'
 import { format, parseISO } from 'date-fns'
 import { ref } from 'vue';
+import DangerButton from '@/Components/DangerButton.vue';
 
 // import { usePage } from '@inertiajs/vue3';
 // const patients = usePage().props.patients
@@ -17,14 +18,31 @@ const props = defineProps({ patients: Object })
 
 const showPatientCreateModal = ref(false)
 const showPatientEditModal = ref(false)
+const showPatientDeleteModal = ref(false)
 
 const patientToEdit = ref(null)
+const patientToDelete = ref(null)
 
 function editPatient(patient) {
   showPatientEditModal.value = true
   patientToEdit.value = patient
   console.log(patientToEdit.value)
 }
+
+function openDeleteModal(patient) {
+  showPatientDeleteModal.value = true
+  patientToDelete.value = patient
+}
+
+function deletePatient() {
+  router.delete(route('patient.destroy', patientToDelete.value), {
+    onSuccess: () => {
+      console.log('deleting')
+      showPatientDeleteModal.value = false
+    }
+  })
+}
+
 </script>
 
 <template>
@@ -46,12 +64,12 @@ function editPatient(patient) {
                         <div>{{ patient.last_name }}</div>
                         <div>{{ patient.first_name }}</div>
                       </Link>
-                      <div class="flex gap-6 text-sm px-2 col-span-2">
-                        <Link :href="route('patient.show', patient)" class="cursor-pointer">Show</Link>
+                      <div class="flex gap-6 text-sm px-2 col-span-2 items-center">
+                        <Link :href="route('patient.show', patient)" class="cursor-pointer text-gray-600 hover:text-gray-900">Show</Link>
                         <SecondaryButton @click="editPatient(patient)">Edit</SecondaryButton>
                       </div>
                       <div class="px-2 col-span-2 text-sm text-gray-500">{{ format(parseISO(patient.updated_at), 'dd/MM/yyyy' )}}</div>
-                      <div class="text-right px-2 text-sm">Delete</div>
+                      <DangerButton @click="openDeleteModal(patient)">Delete</DangerButton>
                     </div>
                   </div>
                 </div>
@@ -64,6 +82,16 @@ function editPatient(patient) {
 
         <Modal :show="showPatientEditModal" @close="showPatientEditModal = false">
           <PatientEdit :patient="patientToEdit" @patient-updated="showPatientEditModal = false" />
+        </Modal>
+
+        <Modal :show="showPatientDeleteModal" @close="showPatientDeleteModal = false">
+          <div class="p-8">
+            <div>Are you sure you want to delete {{ patientToDelete.first_name }} {{ patientToDelete.last_name}}?</div>
+            <div class="mt-4">
+              <SecondaryButton @click="showPatientDeleteModal = false; patientToDelete = null" class="mr-2">Cancel</SecondaryButton>
+              <DangerButton @click="deletePatient(patientToDelete)">Delete</DangerButton>
+            </div>
+          </div>
         </Modal>
 
 

@@ -65,4 +65,10 @@ class PatientController extends Controller
       return back();
     }
 
+    public function destroy(Patient $patient) {
+      $patient->delete();
+
+      return back();
+    }
+
 }

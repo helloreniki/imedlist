@@ -44,4 +44,5 @@ Route::middleware([
 
     Route::post('/patients', [PatientController::class, 'store'])->name('patient.store');
     Route::put('/patients/{patient}', [PatientController::class, 'update'])->name('patient.update');
+    Route::delete('/patients/{patient}', [PatientController::class, 'destroy'])->name('patient.destroy');
 });
