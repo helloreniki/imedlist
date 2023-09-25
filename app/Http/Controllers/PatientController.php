@@ -24,7 +24,7 @@ class PatientController extends Controller
       $units = Drug::UNITS;
       // dd($units);
 
-      return inertia('PatientShow', [
+      return inertia('Patient/PatientShow', [
         'patient' => $patient,
         'units' => $units
       ]);

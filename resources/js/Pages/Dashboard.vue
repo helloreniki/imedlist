@@ -2,9 +2,6 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from '@inertiajs/vue3'
 import { format, parseISO } from 'date-fns'
-import { onMounted, ref, watch } from "vue";
-import Modal from '@/Components/Modal.vue';
-import DrugForm from '@/Parts/DrugForm.vue'
 
 // import { usePage } from '@inertiajs/vue3';
 // const patients = usePage().props.patients

@@ -4,7 +4,8 @@ import { ref, toRefs } from 'vue';
 import { router } from "@inertiajs/vue3";
 import { format, parseISO } from 'date-fns';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import DrugForm from '@/Parts/DrugForm.vue';
+// import DrugForm from '@/Pages/Drug/DrugForm.vue';
+import DrugForm from '@/Pages/Drug/DrugForm.vue'
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import DangerButton from '@/Components/DangerButton.vue';
