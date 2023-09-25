@@ -56,7 +56,7 @@ function deletePatient() {
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-8 min-h-screen">
-                  <div class="text-xl font-semibold mb-8">Patients</div>
+                  <div class="text-xl font-semibold mb-8">Patients ({{ patients.length }})</div>
                   <PrimaryButton @click="showPatientCreateModal = true" type="button" class="mb-6">Add New Patient</PrimaryButton>
                   <div v-for="(patient, i) in props.patients" :key="patient.id" class="max-w-fit">
                     <div class="grid grid-cols-8 items-center leading-loose px-4 py-1" :class="[i%2 == 0 ? 'bg-gray-50' : 'bg-white']">

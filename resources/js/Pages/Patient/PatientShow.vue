@@ -1,7 +1,7 @@
 <script setup>
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { ref, toRefs } from 'vue';
-import { router } from "@inertiajs/vue3";
+import { router, Link } from "@inertiajs/vue3";
 import { format, parseISO } from 'date-fns';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import DrugForm from '@/Pages/Drug/DrugForm.vue'
@@ -10,8 +10,8 @@ import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 
-const props = defineProps({ patient: Object, units: Array })
-const { patient, units } = toRefs(props)
+const props = defineProps({ patient: Object, units: Array, patients: Object })
+const { patient, units, patients } = toRefs(props)
 
 console.log(units.value)
 
@@ -54,7 +54,10 @@ function openEditModal(drug){
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ patient.first_name }} {{ patient.last_name }}
           </h2>
-          <div>Date of Birth: {{ format(parseISO(patient.dob), 'dd.MM.yyyy') }}</div>
+          <div class="flex gap-2">
+            <div>Date of Birth: </div>
+            <div v-if="patient.dob">{{ format(parseISO(patient.dob), 'dd.MM.yyyy') }}</div>
+          </div>
           <div>Address: {{ patient.address }}</div>
           <div>Phone Number: {{ patient.phone }}</div>
           <div>Health Insurance Number: {{ patient.health_insurance_number }}</div>
@@ -63,8 +66,11 @@ function openEditModal(drug){
           <div>Emergency Contact: {{ patient.emergency_contact }}</div>
     </template>
     <div class="py-12">
-      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-          <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-4 min-h-screen">
+      <div class="flex gap-4 max-w-[1500px]  mx-auto sm:px-6 lg:px-8">
+          <div class="flex flex-col gap-3 bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-4 min-h-screen min-w-fit">
+            <Link :href="route('patient.show', patient)" v-for="patient in patients" :key="patient.id" class="hover:text-cyan-600" :class="{'text-cyan-600 font-semibold': $page.url == '/patients/' + patient.id }">{{ patient.first_name }} {{ patient.last_name }}</Link>
+          </div>
+          <div class="w-full bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-4 min-h-screen">
               <div class="p-6 flex flex-col gap-2">
                 <div class="text-3xl font-bold mb-4">Drugs</div>
                 <PrimaryButton @click="showDrugCreateModal = true" type="button" class="self-start mb-4">Add New Drug</PrimaryButton>
