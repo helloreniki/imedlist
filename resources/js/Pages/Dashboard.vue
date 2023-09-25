@@ -1,7 +1,11 @@
 <script setup>
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import PatientCreate from '@/Pages/Patient/PatientCreate.vue'
+import Modal from '@/Components/Modal.vue';
 import { Link } from '@inertiajs/vue3'
 import { format, parseISO } from 'date-fns'
+import { ref } from 'vue';
 
 // import { usePage } from '@inertiajs/vue3';
 // const patients = usePage().props.patients
@@ -9,7 +13,7 @@ import { format, parseISO } from 'date-fns'
 // accept props from laravel controller: updated_at is a string -> covert it with parseISO (could have changed it to date in controller also)
 const props = defineProps({ patients: Object })
 
-
+const showPatientCreateModal = ref(false)
 </script>
 
 <template>
@@ -24,7 +28,8 @@ const props = defineProps({ patients: Object })
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-8 min-h-screen">
                   <div class="text-xl font-semibold mb-8">Patients</div>
-                  <div v-for="(patient, i) in props.patients" :key="patient.id" class="max-w-fit mx-auto">
+                  <PrimaryButton @click="showPatientCreateModal = true" type="button" class="mb-6">Add New Patient</PrimaryButton>
+                  <div v-for="(patient, i) in props.patients" :key="patient.id" class="max-w-fit">
                     <div class="grid grid-cols-8 items-center leading-loose px-4 py-1" :class="[i%2 == 0 ? 'bg-gray-50' : 'bg-white']">
                       <Link :href="route('patient.show', patient)" class="flex gap-2 px-2 col-span-3 cursor-pointer">
                         <div>{{ patient.last_name }}</div>
@@ -41,6 +46,11 @@ const props = defineProps({ patients: Object })
                 </div>
             </div>
         </div>
+
+        <Modal :show="showPatientCreateModal" @close="showPatientCreateModal = false">
+          <PatientCreate @patient-created="showPatientCreateModal = false"/>
+        </Modal>
+
 
     </AppLayout>
 </template>

@@ -30,4 +30,21 @@ class PatientController extends Controller
       ]);
     }
 
+    public function store() {
+      $data = request()->validate([
+        'first_name' => 'required|min:2',
+        'last_name' => 'required|min:2',
+        'dob' => '',
+        'health_insurance_number' => '', // depends on the country
+        'phone' => '',
+        'address' => '',
+        'illness' => '',
+        'allergies' => '',
+      ]);
+
+      auth()->user()->patients()->create($data);
+
+      return back();
+    }
+
 }
