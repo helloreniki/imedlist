@@ -34,4 +34,24 @@ class DrugController extends Controller
 
       return back();
     }
+
+    public function update(Request $request, Patient $patient) {
+
+      $units = Drug::UNITS;
+
+      $data = $request->validate([
+        'name' => 'required',
+        'concentration' => 'required|max:8',
+        'active_ingredient' => 'min:3',
+        'dosage_custom' => '',
+        'dosage_morning' => '',
+        'dosage_midday' => '',
+        'dosage_evening' => '',
+        'unit' => [Rule::in($units)]
+      ]);
+
+      $patient->drugs()->update($data);
+
+      return back();
+    }
 }

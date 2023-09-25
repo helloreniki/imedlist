@@ -39,5 +39,6 @@ Route::middleware([
     Route::get('/patients/{patient}', [PatientController::class, 'show'])->name('patient.show');
     // Route::post('/patients/{patient}', [PatientController::class, 'store'])->name('patient.store');
     Route::post('/patients/{patient}/drugs', [DrugController::class, 'store'])->name('drug.store');
+    Route::put('/patients/{patient}/drugs', [DrugController::class, 'update'])->name('drug.update');
     Route::delete('/patients/{patient}/drugs/{drug}', [DrugController::class, 'destroy'])->name('drug.destroy');
 });

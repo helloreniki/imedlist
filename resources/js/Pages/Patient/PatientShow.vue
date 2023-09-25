@@ -4,8 +4,8 @@ import { ref, toRefs } from 'vue';
 import { router } from "@inertiajs/vue3";
 import { format, parseISO } from 'date-fns';
 import AppLayout from '@/Layouts/AppLayout.vue';
-// import DrugForm from '@/Pages/Drug/DrugForm.vue';
 import DrugForm from '@/Pages/Drug/DrugForm.vue'
+import DrugEditForm from '@/Pages/Drug/DrugEditForm.vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import DangerButton from '@/Components/DangerButton.vue';
@@ -19,8 +19,10 @@ const selectedDrug = ref(false)
 
 const showDrugCreateModal = ref(false)
 const showDrugDeleteModal = ref(false)
+const showDrugEditModal = ref(false)
 
 const drugToBeDeleted = ref(null)
+const drugToBeEdited = ref(null)
 
 function openDeleteModal(drug) {
   showDrugDeleteModal.value = true
@@ -38,6 +40,11 @@ function deleteDrug(drug) {
       showDrugDeleteModal.value = false
     }
   })
+}
+
+function openEditModal(drug){
+  showDrugEditModal.value = true;
+  drugToBeEdited.value = drug
 }
 
 </script>
@@ -62,15 +69,15 @@ function deleteDrug(drug) {
                 <div class="text-3xl font-bold mb-4">Drugs</div>
                 <PrimaryButton @click="showDrugCreateModal = true" type="button" class="self-start mb-4">Add New Drug</PrimaryButton>
                 <div v-for="(drug, i) in patient.drugs" :key="drug.id" class="max-w-xl">
-                  <div @click="selectedDrug = !selectedDrug" class="flex justify-between items-center font-semibold px-4 py-1 uppercase border rounded-lg shadow-md border-gray-300 cursor-pointer">
-                    <div class="flex gap-2">
+                  <div class="flex justify-between items-center font-semibold px-4 py-1 uppercase border rounded-lg shadow-md border-gray-300">
+                    <div @click="selectedDrug = !selectedDrug" class="flex gap-2 cursor-pointer">
                       <div class="font-normal mr-2">{{ i+1 }}.</div>
                       <div>{{ drug.name }} {{ drug.concentration }},</div>
                       <div class="text-sm text-gray-500 normal-case">{{ drug.active_ingredient }}</div>
                     </div>
 
                     <div class="">
-                      <SecondaryButton class="mr-2">Edit</SecondaryButton>
+                      <SecondaryButton @click="openEditModal(drug)" class="mr-2">Edit</SecondaryButton>
                       <DangerButton @click="openDeleteModal(drug)">Delete</DangerButton>
                     </div>
                   </div>
@@ -98,6 +105,10 @@ function deleteDrug(drug) {
           <DangerButton @click="deleteDrug(drugToBeDeleted)">Delete</DangerButton>
         </div>
       </div>
+    </Modal>
+
+    <Modal :show="showDrugEditModal" @close="showDrugEditModal = false">
+      <DrugEditForm :patient="patient" :drug="drugToBeEdited" :units="units" @closeModal="showDrugEditModal = false" />
     </Modal>
   </AppLayout>
 </template>
