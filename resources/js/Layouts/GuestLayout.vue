@@ -1,0 +1,20 @@
+<template>
+  <div class="bg-gray-100">
+    <Menu />
+    <Header />
+
+
+    <div class="max-w-7xl mx-auto px-4 h-screen py-8">
+      <slot />
+    </div>
+
+    <Footer />
+  </div>
+</template>
+
+<script setup>
+import { Link } from '@inertiajs/vue3';
+import Header from '@/Parts/Header.vue';
+import Footer from '@/Parts/Footer.vue';
+import Menu from '@/Parts/Menu.vue';
+</script>
