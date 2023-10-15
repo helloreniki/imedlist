@@ -95,6 +95,7 @@ function openEditModal(drug){
                   </div>
 
                 </div>
+                <PrimaryButton class="self-start my-6"><a :href="route('patient.export')">Export to PDF</a></PrimaryButton>
               </div>
           </div>
       </div>
