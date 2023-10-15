@@ -9,13 +9,13 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class PatientExportController extends Controller
 {
     public function __invoke(Patient $patient) {
-      $drugs = $patient->drugs()->get();
+      $drugs = $patient->drugs()->orderBy('dosage_custom', 'asc')->orderBy('dosage_morning', 'desc')->orderBy('dosage_midday', 'desc')->get();
       // dd($drugs);
 
       $pdf = Pdf::loadView('pdf-list', [
         'patient' => $patient,
         'drugs' => $drugs,
       ]);
-      return $pdf->setPaper('a4', 'landscape')->stream();
+      return $pdf->setPaper('a5')->stream();
     }
 }
