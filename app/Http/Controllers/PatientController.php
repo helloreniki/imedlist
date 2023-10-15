@@ -23,7 +23,7 @@ class PatientController extends Controller
       $patient->load('drugs');
       $units = Drug::UNITS;
       // dd($units);
-      $patients = Patient::select('id', 'first_name', 'last_name')->get();
+      $patients = auth()->user()->patients()->select('id', 'first_name', 'last_name')->get();
       // dd($patients);
 
       return inertia('Patient/PatientShow', [
