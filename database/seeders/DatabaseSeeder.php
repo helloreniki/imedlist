@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use File;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Drug;
 use App\Models\User;
@@ -28,7 +29,36 @@ class DatabaseSeeder extends Seeder
           'email' => 'first@test.com',
         ]);
 
+        $test_user = User::factory()
+        ->create([
+          'name' => 'Test',
+          'email' => 'test@test.com'
+        ]);
         // $user->patients()->saveMany(Patient::factory(3)->create());
+
+
+        $json = file_get_contents('database/drugs.json');
+        $drugs = json_decode($json);
+
+        // create a patient
+        $patient = Patient::factory()->create();
+        // create drugs and attach them to that patient
+        foreach ($drugs as $drug) {
+          $patient->drugs()->create([
+            'name' => $drug->name,
+            'concentration' => $drug->concentration,
+            'active_ingredient' => $drug->active_ingredient,
+            'dosage_custom' => $drug->dosage_custom,
+            'dosage_morning' => $drug->dosage_morning,
+            'dosage_midday' => $drug->dosage_midday,
+            'dosage_evening' => $drug->dosage_evening,
+            'unit' => $drug->unit
+          ]);
+        }
+
+        // attach patient to test user
+        $test_user->patients()->save($patient);
+
 
     }
 }

@@ -1,0 +1,8 @@
+[
+  { "name": "Lekadol", "concentration": "500mg", "active_ingredient": "paracetamol", "dosage_custom": null, "dosage_morning": null, "dosage_midday": null, "dosage_evening": null, "unit": "tablet" },
+  { "name": "Sortis", "concentration": "20mg", "active_ingredient": "rosuvastatine", "dosage_custom": null, "dosage_morning": null, "dosage_midday": null, "dosage_evening": "1", "unit": "tablet" },
+  { "name": "Prenessa", "concentration": "4mg", "active_ingredient": "perindopril", "dosage_custom": null, "dosage_morning": "1", "dosage_midday": null, "dosage_evening": null, "unit": "tablet" },
+  { "name": "Concor", "concentration": "2.5mg", "active_ingredient": "bisoprolol", "dosage_custom": null, "dosage_morning": "1", "dosage_midday": null, "dosage_evening": "1", "unit": "tablet" },
+  { "name": "Katalip", "concentration": "250mg", "active_ingredient": "fenofibrat", "dosage_custom": null, "dosage_morning": "1", "dosage_midday": null, "dosage_evening": null, "unit": "tablet" },
+  { "name": "Brufen", "concentration": "400mg", "active_ingredient": "ibuprofen", "dosage_custom": "3 times a day 1 tablet after meal", "dosage_morning": null, "dosage_midday": null, "dosage_evening": null, "unit": "tablet" }
+]
