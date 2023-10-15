@@ -7,6 +7,7 @@ use App\Http\Controllers\DrugController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PatientExportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,12 +38,13 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [PatientController::class, 'index'])->name('dashboard');
     Route::get('/patients/{patient}', [PatientController::class, 'show'])->name('patient.show');
+    Route::post('/patients', [PatientController::class, 'store'])->name('patient.store');
+    Route::put('/patients/{patient}', [PatientController::class, 'update'])->name('patient.update');
+    Route::delete('/patients/{patient}', [PatientController::class, 'destroy'])->name('patient.destroy');
 
     Route::post('/patients/{patient}/drugs', [DrugController::class, 'store'])->name('drug.store');
     Route::put('/patients/{patient}/drugs', [DrugController::class, 'update'])->name('drug.update');
     Route::delete('/patients/{patient}/drugs/{drug}', [DrugController::class, 'destroy'])->name('drug.destroy');
 
-    Route::post('/patients', [PatientController::class, 'store'])->name('patient.store');
-    Route::put('/patients/{patient}', [PatientController::class, 'update'])->name('patient.update');
-    Route::delete('/patients/{patient}', [PatientController::class, 'destroy'])->name('patient.destroy');
+    Route::get('/{patient}/export-to-pdf', PatientExportController::class)->name('patient.export');
 });

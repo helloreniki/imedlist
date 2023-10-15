@@ -12,6 +12,7 @@ import DangerButton from '@/Components/DangerButton.vue';
 
 const props = defineProps({ patient: Object, units: Array, patients: Object })
 const { patient, units, patients } = toRefs(props)
+console.log(patient.value)
 
 console.log(units.value)
 
@@ -52,18 +53,18 @@ function openEditModal(drug){
   <AppLayout>
     <template #header>
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ patient.first_name }} {{ patient.last_name }}
-          </h2>
-          <div class="flex gap-2">
-            <div>Date of Birth: </div>
-            <div v-if="patient.dob">{{ format(parseISO(patient.dob), 'dd.MM.yyyy') }}</div>
-          </div>
-          <div>Address: {{ patient.address }}</div>
-          <div>Phone Number: {{ patient.phone }}</div>
-          <div>Health Insurance Number: {{ patient.health_insurance_number }}</div>
-          <div>Ilnesses: {{ patient.illness }}</div>
-          <div>Allergies: {{ patient.allergies }}</div>
-          <div>Emergency Contact: {{ patient.emergency_contact }}</div>
+          {{ patient.first_name }} {{ patient.last_name }}
+        </h2>
+        <div class="flex gap-2">
+          <div>Date of Birth: </div>
+          <div v-if="patient.dob">{{ format(parseISO(patient.dob), 'dd.MM.yyyy') }}</div>
+        </div>
+        <div>Address: {{ patient.address }}</div>
+        <div>Phone Number: {{ patient.phone }}</div>
+        <div>Health Insurance Number: {{ patient.health_insurance_number }}</div>
+        <div>Ilnesses: {{ patient.illness }}</div>
+        <div>Allergies: {{ patient.allergies }}</div>
+        <div>Emergency Contact: {{ patient.emergency_contact }}</div>
     </template>
     <div class="py-12">
       <div class="flex gap-4 max-w-[1500px]  mx-auto sm:px-6 lg:px-8">
@@ -95,6 +96,7 @@ function openEditModal(drug){
                   </div>
 
                 </div>
+                <PrimaryButton class="self-start my-6"><a :href="route('patient.export', patient)" target="_blank">Export to PDF</a></PrimaryButton>
               </div>
           </div>
       </div>

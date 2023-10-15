@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('dob')->nullable();
+            $table->date('dob')->nullable();
             $table->string('health_insurance_number')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
