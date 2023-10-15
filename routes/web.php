@@ -46,5 +46,5 @@ Route::middleware([
     Route::put('/patients/{patient}/drugs', [DrugController::class, 'update'])->name('drug.update');
     Route::delete('/patients/{patient}/drugs/{drug}', [DrugController::class, 'destroy'])->name('drug.destroy');
 
-    Route::get('/export-to-pdf', PatientExportController::class)->name('patient.export');
+    Route::get('/{patient}/export-to-pdf', PatientExportController::class)->name('patient.export');
 });

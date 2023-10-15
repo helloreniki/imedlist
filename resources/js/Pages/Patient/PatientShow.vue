@@ -12,6 +12,7 @@ import DangerButton from '@/Components/DangerButton.vue';
 
 const props = defineProps({ patient: Object, units: Array, patients: Object })
 const { patient, units, patients } = toRefs(props)
+// console.log(patient.value)
 
 console.log(units.value)
 
@@ -95,7 +96,7 @@ function openEditModal(drug){
                   </div>
 
                 </div>
-                <PrimaryButton class="self-start my-6"><a :href="route('patient.export')">Export to PDF</a></PrimaryButton>
+                <PrimaryButton class="self-start my-6"><a :href="route('patient.export', patient)">Export to PDF</a></PrimaryButton>
               </div>
           </div>
       </div>
