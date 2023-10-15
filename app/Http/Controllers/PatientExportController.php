@@ -16,6 +16,6 @@ class PatientExportController extends Controller
         'patient' => $patient,
         'drugs' => $drugs,
       ]);
-      return $pdf->stream();
+      return $pdf->setPaper('a4', 'landscape')->stream();
     }
 }
