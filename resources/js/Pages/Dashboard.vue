@@ -7,7 +7,7 @@ import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import { Link, router } from '@inertiajs/vue3'
 import { format, parseISO } from 'date-fns'
-import { ref } from 'vue';
+import { ref, watch, computed } from 'vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import { ChevronDownIcon } from '@heroicons/vue/24/solid';
 import { ChevronUpIcon } from '@heroicons/vue/24/solid';
@@ -16,7 +16,7 @@ import { ChevronUpIcon } from '@heroicons/vue/24/solid';
 // const patients = usePage().props.patients
 
 // accept props from laravel controller: updated_at is a string -> covert it with parseISO (could have changed it to date in controller also)
-const props = defineProps({ patients: Object })
+const props = defineProps({ patients: Array })
 
 const showPatientCreateModal = ref(false)
 const showPatientEditModal = ref(false)
@@ -44,6 +44,39 @@ function deletePatient() {
     }
   })
 }
+console.log(props.patients)
+
+let sortedPatients = ref(null)
+let sortedByName = ref(null)
+console.log(sortedByName.value)
+sortedPatients.value = props.patients
+// items.sort((a, b) => a.value - b.value); // only for numeric value
+function sortBy(column, direction) {
+  console.log('sorting')
+  sortedPatients.value = Object.values(props.patients).sort((a,b) => {
+    if(direction == 'asc'){
+      sortedByName.value = false
+      if(a[column] > b[column]){
+        return 1;
+      } else {
+        return -1;
+      }
+    } else {
+      sortedByName.value = true
+      if(a[column] > b[column]){
+        return -1;
+      } else {
+        return 1;
+      }
+    }
+  })
+  // console.log('sorted', sortedPatients.value)
+  // console.log('props', props.patients)
+  return sortedPatients
+}
+//  watch(sortedByName, (newVal) => {
+//   console.log('sorted', newVal)
+//  })
 
 </script>
 
@@ -63,14 +96,14 @@ function deletePatient() {
                   <div class="grid grid-cols-6 gap-2 md:grid-cols-8 px-4 py-1 font-semibold">
                     <div class="col-span-3 px-2 text-left flex gap-2 items-center">
                       <div>Name</div>
-                      <ChevronDownIcon class="h-4 w-4" />
-                      <ChevronUpIcon class="h-4 w-4" />
+                      <ChevronDownIcon v-if="sortedByName || sortedByName == null" @click="sortBy('last_name', 'asc')" class="h-4 w-4" />
+                      <ChevronUpIcon v-if="sortedByName == false || sortedByName == null" @click="sortBy('last_name', 'desc')" class="h-4 w-4" />
                     </div>
                     <div class="text-center">DOB</div>
                     <div class="md:col-span-2"></div>
                     <div class="hidden md:block px-2 text-center">Updated</div>
                   </div>
-                  <div v-for="(patient, i) in props.patients" :key="patient.id" class="">
+                  <div v-for="(patient, i) in sortedPatients" :key="patient.id" class="">
                     <div class="grid grid-cols-6 md:grid-cols-8 gap-2 items-center leading-loose px-4 py-1" :class="[i%2 == 0 ? 'bg-gray-50' : 'bg-white']">
                       <Link :href="route('patient.show', patient)" class="flex gap-2 px-2 col-span-3 cursor-pointer">
                         <div>{{ patient.last_name }}</div>
