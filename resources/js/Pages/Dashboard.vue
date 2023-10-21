@@ -44,39 +44,35 @@ function deletePatient() {
     }
   })
 }
-console.log(props.patients)
 
-let sortedPatients = ref(null)
-let sortedByName = ref(null)
-console.log(sortedByName.value)
-sortedPatients.value = props.patients
-// items.sort((a, b) => a.value - b.value); // only for numeric value
-function sortBy(column, direction) {
-  console.log('sorting')
-  sortedPatients.value = Object.values(props.patients).sort((a,b) => {
-    if(direction == 'asc'){
-      sortedByName.value = false
-      if(a[column] > b[column]){
-        return 1;
+// sorting
+
+let sortDirection = ref('desc')
+let sortColumn = ref('updated_at')
+
+const sortedPatients = computed(() => {
+  return Object.values(props.patients).sort((a,b) => {
+      if(sortDirection.value == 'asc'){
+        if(a[sortColumn.value] > b[sortColumn.value]){
+          return 1;
+        } else {
+          return -1;
+        }
       } else {
-        return -1;
+        if(a[sortColumn.value] > b[sortColumn.value]){
+          return -1;
+        } else {
+          return 1;
+        }
       }
-    } else {
-      sortedByName.value = true
-      if(a[column] > b[column]){
-        return -1;
-      } else {
-        return 1;
-      }
-    }
   })
-  // console.log('sorted', sortedPatients.value)
-  // console.log('props', props.patients)
-  return sortedPatients
-}
-//  watch(sortedByName, (newVal) => {
-//   console.log('sorted', newVal)
-//  })
+})
+
+watch(sortedPatients, (newVal) => {
+  console.log('watch')
+  console.log(sortDirection.value)
+  console.log(sortColumn.value)
+})
 
 </script>
 
@@ -96,12 +92,16 @@ function sortBy(column, direction) {
                   <div class="grid grid-cols-6 gap-2 md:grid-cols-8 px-4 py-1 font-semibold">
                     <div class="col-span-3 px-2 text-left flex gap-2 items-center">
                       <div>Name</div>
-                      <ChevronDownIcon v-if="sortedByName || sortedByName == null" @click="sortBy('last_name', 'asc')" class="h-4 w-4" />
-                      <ChevronUpIcon v-if="sortedByName == false || sortedByName == null" @click="sortBy('last_name', 'desc')" class="h-4 w-4" />
+                      <ChevronDownIcon @click="sortDirection = 'asc'; sortColumn = 'last_name'" class="h-4 w-4" />
+                      <ChevronUpIcon  @click="sortDirection = 'desc'; sortColumn = 'last_name'" class="h-4 w-4" />
                     </div>
                     <div class="text-center">DOB</div>
                     <div class="md:col-span-2"></div>
-                    <div class="hidden md:block px-2 text-center">Updated</div>
+                    <div class="hidden md:flex gap-2 items-center px-2 text-center">
+                      <div>Updated</div>
+                      <ChevronDownIcon @click="sortDirection = 'asc'; sortColumn = 'updated_at'" class="h-4 w-4" />
+                      <ChevronUpIcon  @click="sortDirection = 'desc'; sortColumn = 'updated_at'" class="h-4 w-4" />
+                    </div>
                   </div>
                   <div v-for="(patient, i) in sortedPatients" :key="patient.id" class="">
                     <div class="grid grid-cols-6 md:grid-cols-8 gap-2 items-center leading-loose px-4 py-1" :class="[i%2 == 0 ? 'bg-gray-50' : 'bg-white']">
