@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         $user = User::factory()
           ->has(Patient::factory()
               ->has(Drug::factory()->count(rand(4,7)))
-          ->count(3))
+          ->count(20))
         ->create([
           'name' => 'First',
           'email' => 'first@test.com',
