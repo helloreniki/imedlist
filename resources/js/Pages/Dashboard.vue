@@ -59,12 +59,13 @@ function deletePatient() {
                   <div class="text-xl font-semibold mb-8">Patients ({{ patients.length }})</div>
                   <PrimaryButton @click="showPatientCreateModal = true" type="button" class="mb-6">Add New Patient</PrimaryButton>
                   <div v-for="(patient, i) in props.patients" :key="patient.id" class="max-w-fit">
-                    <div class="grid grid-cols-8 items-center leading-loose px-4 py-1" :class="[i%2 == 0 ? 'bg-gray-50' : 'bg-white']">
+                    <div class="grid grid-cols-9 items-center text-center leading-loose px-4 py-1" :class="[i%2 == 0 ? 'bg-gray-50' : 'bg-white']">
                       <Link :href="route('patient.show', patient)" class="flex gap-2 px-2 col-span-3 cursor-pointer">
                         <div>{{ patient.last_name }}</div>
                         <div>{{ patient.first_name }}</div>
                       </Link>
-                      <div class="flex gap-6 text-sm px-2 col-span-2 items-center">
+                      <div>{{ format(parseISO(patient.dob), 'dd.MM.yyyy') }}</div>
+                      <div class="flex gap-6 text-sm px-2 col-span-2 items-center justify-center">
                         <Link :href="route('patient.show', patient)" class="cursor-pointer text-gray-600 hover:text-gray-900">Show</Link>
                         <SecondaryButton @click="editPatient(patient)">Edit</SecondaryButton>
                       </div>
