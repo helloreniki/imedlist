@@ -7,14 +7,16 @@ import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import { Link, router } from '@inertiajs/vue3'
 import { format, parseISO } from 'date-fns'
-import { ref } from 'vue';
+import { ref, watch, computed } from 'vue';
 import DangerButton from '@/Components/DangerButton.vue';
+import { ChevronDownIcon } from '@heroicons/vue/24/solid';
+import { ChevronUpIcon } from '@heroicons/vue/24/solid';
 
 // import { usePage } from '@inertiajs/vue3';
 // const patients = usePage().props.patients
 
 // accept props from laravel controller: updated_at is a string -> covert it with parseISO (could have changed it to date in controller also)
-const props = defineProps({ patients: Object })
+const props = defineProps({ patients: Array })
 
 const showPatientCreateModal = ref(false)
 const showPatientEditModal = ref(false)
@@ -43,6 +45,35 @@ function deletePatient() {
   })
 }
 
+// sorting
+
+let sortDirection = ref('desc')
+let sortColumn = ref('updated_at')
+
+const sortedPatients = computed(() => {
+  return Object.values(props.patients).sort((a,b) => {
+      if(sortDirection.value == 'asc'){
+        if(a[sortColumn.value] > b[sortColumn.value]){
+          return 1;
+        } else {
+          return -1;
+        }
+      } else {
+        if(a[sortColumn.value] > b[sortColumn.value]){
+          return -1;
+        } else {
+          return 1;
+        }
+      }
+  })
+})
+
+// watch(sortedPatients, (newVal) => {
+//   console.log('watch')
+//   console.log(sortDirection.value)
+//   console.log(sortColumn.value)
+// })
+
 </script>
 
 <template>
@@ -58,19 +89,33 @@ function deletePatient() {
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-8 min-h-screen">
                   <div class="text-xl font-semibold mb-8">Patients ({{ patients.length }})</div>
                   <PrimaryButton @click="showPatientCreateModal = true" type="button" class="mb-6">Add New Patient</PrimaryButton>
-                  <div v-for="(patient, i) in props.patients" :key="patient.id" class="max-w-fit">
-                    <div class="grid grid-cols-9 items-center text-center leading-loose px-4 py-1" :class="[i%2 == 0 ? 'bg-gray-50' : 'bg-white']">
+                  <div class="grid grid-cols-6 gap-2 md:grid-cols-8 px-4 py-1 font-semibold">
+                    <div class="col-span-3 px-2 text-left flex gap-2 items-center">
+                      <div>Name</div>
+                      <ChevronDownIcon @click="sortDirection = 'asc'; sortColumn = 'last_name'" class="h-4 w-4" />
+                      <ChevronUpIcon  @click="sortDirection = 'desc'; sortColumn = 'last_name'" class="h-4 w-4" />
+                    </div>
+                    <div class="text-center">DOB</div>
+                    <div class="md:col-span-2"></div>
+                    <div class="hidden md:flex gap-2 items-center px-2">
+                      <div>Updated</div>
+                      <ChevronDownIcon @click="sortDirection = 'asc'; sortColumn = 'updated_at'" class="h-4 w-4" />
+                      <ChevronUpIcon @click="sortDirection = 'desc'; sortColumn = 'updated_at'" class="h-4 w-4" />
+                    </div>
+                  </div>
+                  <div v-for="(patient, i) in sortedPatients" :key="patient.id" class="">
+                    <div class="grid grid-cols-6 md:grid-cols-8 gap-2 items-center leading-loose px-4 py-1" :class="[i%2 == 0 ? 'bg-gray-50' : 'bg-white']">
                       <Link :href="route('patient.show', patient)" class="flex gap-2 px-2 col-span-3 cursor-pointer">
                         <div>{{ patient.last_name }}</div>
                         <div>{{ patient.first_name }}</div>
                       </Link>
-                      <div>{{ format(parseISO(patient.dob), 'dd.MM.yyyy') }}</div>
-                      <div class="flex gap-6 text-sm px-2 col-span-2 items-center justify-center">
-                        <Link :href="route('patient.show', patient)" class="cursor-pointer text-gray-600 hover:text-gray-900">Show</Link>
-                        <SecondaryButton @click="editPatient(patient)">Edit</SecondaryButton>
+                      <div class="text-sm text-center text-gray-500">{{ format(parseISO(patient.dob), 'dd.MM.yyyy') }}</div>
+                      <div class="flex gap-6 text-sm px-2 md:col-span-2 items-center justify-center">
+                        <Link :href="route('patient.show', patient)" class="hidden md:block cursor-pointer text-gray-600 hover:text-gray-900">Show</Link>
+                        <SecondaryButton @click="editPatient(patient)" class="">Edit</SecondaryButton>
                       </div>
-                      <div class="px-2 col-span-2 text-sm text-gray-500">{{ format(parseISO(patient.updated_at), 'dd/MM/yyyy' )}}</div>
-                      <DangerButton @click="openDeleteModal(patient)">Delete</DangerButton>
+                      <div class="hidden md:block px-2 text-sm text-gray-500">{{ format(parseISO(patient.updated_at), 'dd/MM/yyyy' )}}</div>
+                      <DangerButton @click="openDeleteModal(patient)" class="">Delete</DangerButton>
                     </div>
                   </div>
                 </div>
