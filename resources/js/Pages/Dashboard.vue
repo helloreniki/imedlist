@@ -75,11 +75,11 @@ const sortedPatients = computed(() => {
   })
 })
 
-// watch(sortedPatients, (newVal) => {
-//   console.log('watch')
-//   console.log(sortDirection.value)
-//   console.log(sortColumn.value)
-// })
+watch(sortedPatients, (newVal) => {
+  console.log('watch', sortedPatients.value.length)
+  console.log(sortDirection.value)
+  console.log(sortColumn.value)
+})
 
 </script>
 
@@ -113,6 +113,7 @@ const sortedPatients = computed(() => {
                       <ChevronUpIcon @click="sortDirection = 'desc'; sortColumn = 'updated_at'" class="h-4 w-4" />
                     </div>
                   </div>
+                  <div v-if="sortedPatients.length == 0" class="px-6 py-4">No patients...</div>
                   <div v-for="(patient, i) in sortedPatients" :key="patient.id" class="">
                     <div class="grid grid-cols-6 md:grid-cols-8 gap-2 items-center leading-loose px-4 py-1" :class="[i%2 == 0 ? 'bg-gray-50' : 'bg-white']">
                       <Link :href="route('patient.show', patient)" class="flex gap-2 px-2 col-span-3 cursor-pointer">
