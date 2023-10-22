@@ -66,18 +66,21 @@ function openEditModal(drug){
         <div>Allergies: {{ patient.allergies }}</div>
         <div>Emergency Contact: {{ patient.emergency_contact }}</div>
     </template>
+    <!-- Goes in slot -->
     <div class="py-12">
-      <div class="flex gap-4 max-w-[1500px]  mx-auto sm:px-6 lg:px-8">
-          <div class="flex flex-col gap-3 bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-4 min-h-screen min-w-fit">
+      <div class="flex gap-4 max-w-[1500px] mx-auto sm:px-6 lg:px-8">
+          <!-- SideNav -->
+          <div class="flex flex-col gap-3 bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-4 min-h-screen min-w-fit overflow-y-scroll">
             <Link :href="route('patient.show', patient)" v-for="patient in patients" :key="patient.id" class="hover:text-cyan-600" :class="{'text-cyan-600 font-semibold': $page.url == '/patients/' + patient.id }">{{ patient.first_name }} {{ patient.last_name }}</Link>
           </div>
+          <!-- Main -->
           <div class="w-full bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-4 min-h-screen">
               <div class="p-6 flex flex-col gap-2">
                 <div class="text-3xl font-bold mb-4">Drugs</div>
                 <PrimaryButton @click="showDrugCreateModal = true" type="button" class="self-start mb-4">Add New Drug</PrimaryButton>
                 <div v-for="(drug, i) in patient.drugs" :key="drug.id" class="max-w-xl">
                   <div class="flex justify-between items-center font-semibold px-4 py-1 uppercase border rounded-lg shadow-md border-gray-300">
-                    <div @click="selectedDrug = !selectedDrug" class="flex gap-2 cursor-pointer">
+                    <div @click="selectedDrug = !selectedDrug" class="flex gap-2 items-baseline cursor-pointer">
                       <div class="font-normal mr-2">{{ i+1 }}.</div>
                       <div>{{ drug.name }} {{ drug.concentration }},</div>
                       <div class="text-sm text-gray-500 normal-case">{{ drug.active_ingredient }}</div>
@@ -103,6 +106,7 @@ function openEditModal(drug){
           </div>
       </div>
     </div>
+
     <Modal :show="showDrugCreateModal" @close="showDrugCreateModal = false">
         <DrugForm :patient="patient" :units="units" @closeModal="showDrugCreateModal = false" />
     </Modal>
