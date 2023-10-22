@@ -28,7 +28,7 @@ const dosage_type = ref('Custom Dosage')
 function submitForm() {
   console.log('submited')
   console.log(patient)
-  form.put(route('drug.update', patient.value), {
+  form.put(route('drug.update', [patient.value, drug.value]), {
     onSuccess: () => {
       // console.log('success');
       emit('closeModal')

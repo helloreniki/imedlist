@@ -35,7 +35,7 @@ class DrugController extends Controller
       return back();
     }
 
-    public function update(Request $request, Patient $patient) {
+    public function update(Request $request, Patient $patient, Drug $drug) {
 
       $units = Drug::UNITS;
 
@@ -50,7 +50,7 @@ class DrugController extends Controller
         'unit' => [Rule::in($units)]
       ]);
 
-      $patient->drugs()->update($data);
+      $drug->update($data);
 
       return back();
     }

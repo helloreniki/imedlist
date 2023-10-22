@@ -34,7 +34,7 @@
         @foreach ($drugs as $drug)
           <tr>
             <td class="align-left">
-              <div class="first">{{ $drug->name }} {{$drug->concentration}}</div>
+              <div class="first">{{ $drug->name }} <span class="concentration">{{$drug->concentration}}<span></div>
               <div>{{ $drug->active_ingredient}}</div>
             </td>
             @if(!$drug->dosage_custom)
@@ -69,12 +69,16 @@ th {
   font-size: 16px;
 }
 .align-left {
-  text-align: left
+  text-align: left;
 }
 td .first {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
   text-transform: uppercase;
+}
+.concentration {
+  text-transform: lowercase;
+  font-weight: normal;
 }
 
 </style>

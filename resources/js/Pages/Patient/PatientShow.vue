@@ -82,7 +82,7 @@ function openEditModal(drug){
                   <div class="flex justify-between items-center font-semibold px-4 py-1 uppercase border rounded-lg shadow-md border-gray-300">
                     <div @click="selectedDrug = !selectedDrug" class="flex gap-2 items-baseline cursor-pointer">
                       <div class="font-normal mr-2">{{ i+1 }}.</div>
-                      <div>{{ drug.name }} {{ drug.concentration }},</div>
+                      <div>{{ drug.name }} <span class="normal-case">{{ drug.concentration }},</span></div>
                       <div class="text-sm text-gray-500 normal-case">{{ drug.active_ingredient }}</div>
                     </div>
 
@@ -114,7 +114,7 @@ function openEditModal(drug){
     <Modal :show="showDrugDeleteModal" @close="showDrugDeleteModal = false">
       <div class="p-8">
         <div>Are you sure you want to delete {{ drugToBeDeleted.name }}?</div>
-        <div>
+        <div class="mt-4">
           <SecondaryButton @click="showDrugDeleteModal = false; drugToBeDeleted = null" class="mr-2">Cancel</SecondaryButton>
           <DangerButton @click="deleteDrug(drugToBeDeleted)">Delete</DangerButton>
         </div>
