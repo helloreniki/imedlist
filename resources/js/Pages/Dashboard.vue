@@ -11,6 +11,7 @@ import { ref, watch, computed } from 'vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import { ChevronDownIcon } from '@heroicons/vue/24/solid';
 import { ChevronUpIcon } from '@heroicons/vue/24/solid';
+import TextInput from '@/Components/TextInput.vue';
 
 // import { usePage } from '@inertiajs/vue3';
 // const patients = usePage().props.patients
@@ -45,13 +46,19 @@ function deletePatient() {
   })
 }
 
-// sorting
+// sorting + search
 
-let sortDirection = ref('desc')
-let sortColumn = ref('updated_at')
+const sortDirection = ref('desc')
+const sortColumn = ref('updated_at')
+const searchInput = ref('')
 
 const sortedPatients = computed(() => {
-  return Object.values(props.patients).sort((a,b) => {
+  return Object.values(props.patients)
+    .filter(patient =>
+          patient.last_name.toLowerCase().includes(searchInput.value.toLowerCase())
+          || patient.first_name.toLowerCase().includes(searchInput.value.toLowerCase())
+    )
+    .sort((a,b) => {
       if(sortDirection.value == 'asc'){
         if(a[sortColumn.value] > b[sortColumn.value]){
           return 1;
@@ -87,8 +94,11 @@ const sortedPatients = computed(() => {
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-8 min-h-screen">
-                  <div class="text-xl font-semibold mb-8">Patients ({{ patients.length }})</div>
-                  <PrimaryButton @click="showPatientCreateModal = true" type="button" class="mb-6">Add New Patient</PrimaryButton>
+                  <div class="text-xl font-semibold mb-8">Patients ({{ sortedPatients.length }})</div>
+                  <div class="flex gap-4 justify-between items-center mb-6">
+                    <PrimaryButton @click="showPatientCreateModal = true" type="button" class="">Add New Patient</PrimaryButton>
+                    <TextInput type="text" placeholder="Search..." v-model="searchInput" class="max-w-xl" />
+                  </div>
                   <div class="grid grid-cols-6 gap-2 md:grid-cols-8 px-4 py-1 font-semibold">
                     <div class="col-span-3 px-2 text-left flex gap-2 items-center">
                       <div>Name</div>
