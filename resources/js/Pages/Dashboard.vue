@@ -68,11 +68,11 @@ const sortedPatients = computed(() => {
   })
 })
 
-watch(sortedPatients, (newVal) => {
-  console.log('watch')
-  console.log(sortDirection.value)
-  console.log(sortColumn.value)
-})
+// watch(sortedPatients, (newVal) => {
+//   console.log('watch')
+//   console.log(sortDirection.value)
+//   console.log(sortColumn.value)
+// })
 
 </script>
 
@@ -97,10 +97,10 @@ watch(sortedPatients, (newVal) => {
                     </div>
                     <div class="text-center">DOB</div>
                     <div class="md:col-span-2"></div>
-                    <div class="hidden md:flex gap-2 items-center px-2 text-center">
+                    <div class="hidden md:flex gap-2 items-center px-2">
                       <div>Updated</div>
                       <ChevronDownIcon @click="sortDirection = 'asc'; sortColumn = 'updated_at'" class="h-4 w-4" />
-                      <ChevronUpIcon  @click="sortDirection = 'desc'; sortColumn = 'updated_at'" class="h-4 w-4" />
+                      <ChevronUpIcon @click="sortDirection = 'desc'; sortColumn = 'updated_at'" class="h-4 w-4" />
                     </div>
                   </div>
                   <div v-for="(patient, i) in sortedPatients" :key="patient.id" class="">
@@ -114,7 +114,7 @@ watch(sortedPatients, (newVal) => {
                         <Link :href="route('patient.show', patient)" class="hidden md:block cursor-pointer text-gray-600 hover:text-gray-900">Show</Link>
                         <SecondaryButton @click="editPatient(patient)" class="">Edit</SecondaryButton>
                       </div>
-                      <div class="hidden md:block px-2 text-sm text-center text-gray-500">{{ format(parseISO(patient.updated_at), 'dd/MM/yyyy' )}}</div>
+                      <div class="hidden md:block px-2 text-sm text-gray-500">{{ format(parseISO(patient.updated_at), 'dd/MM/yyyy' )}}</div>
                       <DangerButton @click="openDeleteModal(patient)" class="">Delete</DangerButton>
                     </div>
                   </div>
