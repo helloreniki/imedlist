@@ -33,20 +33,20 @@ const close = () => {
 };
 
 // if i have 2 modals open, it runs 2times esc, 2 times props.show -> close 2 times
-// const closeOnEscape = (e) => {
-//     if (e.key === 'Escape' && props.show) {
-//         console.log(e.key)
-//         close();
-//     }
-// };
+const closeOnEscape = (e) => {
+    if (e.key === 'Escape' && props.show) {
+        console.log(e.key)
+        close();
+    }
+};
 
 
-// onMounted(() => document.addEventListener('keydown', closeOnEscape));
+onMounted(() => document.addEventListener('keydown', closeOnEscape));
 
-// onUnmounted(() => {
-//     document.removeEventListener('keydown', closeOnEscape);
-//     document.body.style.overflow = null;
-// });
+onUnmounted(() => {
+    document.removeEventListener('keydown', closeOnEscape);
+    document.body.style.overflow = null;
+});
 
 
 const maxWidthClass = computed(() => {
