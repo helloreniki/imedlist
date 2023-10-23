@@ -12,6 +12,7 @@ import DangerButton from '@/Components/DangerButton.vue';
 import { ChevronDownIcon } from '@heroicons/vue/24/solid';
 import { ChevronUpIcon } from '@heroicons/vue/24/solid';
 import TextInput from '@/Components/TextInput.vue';
+import VueTailwindDatepicker from "vue-tailwind-datepicker";
 
 // import { usePage } from '@inertiajs/vue3';
 // const patients = usePage().props.patients
@@ -46,11 +47,19 @@ function deletePatient() {
   })
 }
 
-// sorting + search
+// sorting + search + date
 
 const sortDirection = ref('desc')
 const sortColumn = ref('updated_at')
 const searchInput = ref('')
+const dateValue = ref({
+  startDate: "",
+  endDate: "",
+});
+const formatter = ref({
+  date: 'YYYY-MM-DD',
+  month: 'MM',
+})
 
 const sortedPatients = computed(() => {
   return Object.values(props.patients)
@@ -58,6 +67,13 @@ const sortedPatients = computed(() => {
           patient.last_name.toLowerCase().includes(searchInput.value.toLowerCase())
           || patient.first_name.toLowerCase().includes(searchInput.value.toLowerCase())
     )
+    .filter(patient => {
+      if(dateValue.value.startDate && dateValue.value.endDate){
+        return new Date(patient.updated_at) >= new Date(dateValue.value.startDate) && new Date(patient.updated_at).setHours(0,0,0,0) <= new Date(dateValue.value.endDate);
+      } else {
+        return patient;
+      }
+    })
     .sort((a,b) => {
       if(sortDirection.value == 'asc'){
         if(a[sortColumn.value] > b[sortColumn.value]){
@@ -75,11 +91,19 @@ const sortedPatients = computed(() => {
   })
 })
 
-watch(sortedPatients, (newVal) => {
-  console.log('watch', sortedPatients.value.length)
-  console.log(sortDirection.value)
-  console.log(sortColumn.value)
-})
+// watch(sortedPatients, (newVal) => {
+//   console.log('watch', sortedPatients.value.length)
+//   console.log(sortDirection.value)
+//   console.log(sortColumn.value)
+// })
+
+
+// startDate, endDate is a string '03.10.2023'
+// watch(() => dateValue, (newVal) => {
+//   console.log('watch date', newVal.value.startDate)
+//   console.log('watch date', new Date(newVal.value.startDate)) // careful, string date has to be in format YYYY-MM-DD
+
+// }, { deep: true })
 
 </script>
 
@@ -96,7 +120,8 @@ watch(sortedPatients, (newVal) => {
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-8 min-h-screen">
                   <div class="text-xl font-semibold mb-8">Patients ({{ sortedPatients.length }})</div>
                   <div class="flex gap-4 justify-between items-center mb-6">
-                    <PrimaryButton @click="showPatientCreateModal = true" type="button" class="">Add New Patient</PrimaryButton>
+                    <PrimaryButton @click="showPatientCreateModal = true" type="button" class="shrink-0">Add New Patient</PrimaryButton>
+                    <vue-tailwind-datepicker v-model="dateValue" :formatter="formatter" as-single use-range class="" />
                     <TextInput type="text" placeholder="Search..." v-model="searchInput" class="max-w-xl" />
                   </div>
                   <div class="grid grid-cols-6 gap-2 md:grid-cols-8 px-4 py-1 font-semibold">
