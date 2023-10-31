@@ -3,7 +3,7 @@
     <Menu />
     <Header />
 
-    <div class="max-w-7xl mx-auto px-4 h-screen py-8">
+    <div class="max-w-7xl mx-auto px-4 min-h-screen py-16">
       <slot />
     </div>
 
