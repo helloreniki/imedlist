@@ -11,33 +11,6 @@
             <li v-for="sub in list.sublist">{{ sub }}</li>
           </ul>
         </li>
-
-
-
-<!--
-
-        <li>Create a patient with all important information:
-          <ul class="list-disc list-inside flex flex-col gap-2 ml-12">
-            <li>name</li>
-            <li>address</li>
-            <li>health insurance number</li>
-            <li>phone number</li>
-            <li>emergency contact</li>
-            <li>allergies</li>
-            <li>diseases</li>
-          </ul>
-        </li>
-        <li>Attach drugs to a patient</li>
-        <li>For each drug include information about drug:</li>
-          <ul class="flex flex-col gap-2 list-disc list-inside ml-12">
-            <li>drug name</li>
-            <li>concentration</li>
-            <li>active ingredient</li>
-            <li>dosage: custom, morning, midday, evening</li>
-          </ul>
-        <li>Save a patient with his drugs information</li>
-        <li>You can export data to PDF and print it, so you can always have it in your wallet</li>
-        <li>If anything changes, you can later easily change and update any information</li> -->
       </ul>
 
   </GuestLayout>
