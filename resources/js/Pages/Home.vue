@@ -1,7 +1,7 @@
 <template>
   <GuestLayout>
 
-      <ul class="mt-8 text-2xl flex flex-col gap-4">
+      <ul class="mt-8 text-xl sm:text-2xl flex flex-col gap-4">
         <li v-for="list in lists" class="">
           <div class="flex gap-3 items-center">
             <ArrowRightCircleIcon class="w-6 h-6 text-indigo-600"/>

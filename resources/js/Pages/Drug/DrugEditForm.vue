@@ -46,13 +46,13 @@ function submitForm() {
     <h2 class="text-2xl font-bold mb-8">Add New Drug for {{ patient.first_name }} {{ patient.last_name }}</h2>
     <form @submit.prevent="submitForm()" class="flex flex-col gap-2">
       <div class="flex flex-col gap-2 p-2">
-        <div class="flex gap-4">
-          <div class="w-3/4">
+        <div class="flex flex-col md:flex-row gap-x-4 gap-y-2">
+          <div class="md:w-1/2">
             <InputLabel value="Drug Name" />
             <TextInput v-model="form.name" />
             <InputError :message="form.errors.name" />
           </div>
-          <div class="1/4">
+          <div class="">
             <InputLabel value="Concentration" />
             <TextInput v-model="form.concentration" />
             <InputError :message="form.errors.concentration" />

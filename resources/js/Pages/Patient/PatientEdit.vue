@@ -38,13 +38,13 @@ function submitForm() {
 </script>
 
 <template>
-  <div ref="drugModal" tabindex="0" class="px-12 py-8">
+  <div ref="drugModal" tabindex="0" class="px-2 sm:px-4 md:px-12 py-8">
     <h2 class="text-2xl font-bold mb-8">
       Update Patient {{ patient.first_name }}
     </h2>
     <form @submit.prevent="submitForm()" class="flex flex-col gap-2">
       <div class="flex flex-col gap-2 p-2">
-        <div class="flex gap-4">
+        <div class="flex flex-col md:flex-row gap-4">
           <div class="w-full">
             <InputLabel value="First Name" />
             <TextInput v-model="form.first_name" />
@@ -61,7 +61,7 @@ function submitForm() {
             <InputError :message="form.errors.dob" />
           </div>
         </div>
-        <div class="flex gap-4">
+        <div class="flex flex-col sm:flex-row gap-4">
           <div class="w-full">
             <InputLabel value="Health Insurance Number" />
             <TextInput v-model="form.health_insurance_number" />

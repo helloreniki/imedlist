@@ -117,14 +117,14 @@ const sortedPatients = computed(() => {
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-8 min-h-screen">
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 sm:px-8 py-8 min-h-screen">
                   <div class="text-xl font-semibold mb-8">Patients ({{ sortedPatients.length }})</div>
-                  <div class="flex gap-4 justify-between items-center mb-6">
-                    <PrimaryButton @click="showPatientCreateModal = true" type="button" class="shrink-0">Add New Patient</PrimaryButton>
+                  <div class="flex flex-col sm:flex-row gap-4 sm:items-center mb-6 max-w-sm sm:max-w-none">
+                    <PrimaryButton @click="showPatientCreateModal = true" type="button" class="shrink-0 self-start">Add New Patient</PrimaryButton>
                     <vue-tailwind-datepicker v-model="dateValue" :formatter="formatter" as-single use-range class="" />
-                    <TextInput type="text" placeholder="Search..." v-model="searchInput" class="max-w-xl" />
+                    <TextInput type="text" placeholder="Search..." v-model="searchInput" class="" />
                   </div>
-                  <div class="grid grid-cols-6 gap-2 md:grid-cols-8 px-4 py-1 font-semibold">
+                  <div class="grid grid-cols-6 gap-2 md:grid-cols-8 px-2 sm:px-4 py-1 font-semibold">
                     <div class="col-span-3 px-2 text-left flex gap-2 items-center">
                       <div>Name</div>
                       <ChevronDownIcon @click="sortDirection = 'asc'; sortColumn = 'last_name'" class="h-4 w-4" />
@@ -148,10 +148,16 @@ const sortedPatients = computed(() => {
                       <div class="text-sm text-center text-gray-500">{{ format(parseISO(patient.dob), 'dd.MM.yyyy') }}</div>
                       <div class="flex gap-6 text-sm px-2 md:col-span-2 items-center justify-center">
                         <Link :href="route('patient.show', patient)" class="hidden md:block cursor-pointer text-gray-600 hover:text-gray-900">Show</Link>
-                        <SecondaryButton @click="editPatient(patient)" class="">Edit</SecondaryButton>
+                        <SecondaryButton @click="editPatient(patient)" class="">
+                          <p class="sm:hidden">E</p>
+                          <p class="hidden sm:block">Edit</p>
+                        </SecondaryButton>
                       </div>
                       <div class="hidden md:block px-2 text-sm text-gray-500">{{ format(parseISO(patient.updated_at), 'dd/MM/yyyy' )}}</div>
-                      <DangerButton @click="openDeleteModal(patient)" class="">Delete</DangerButton>
+                      <DangerButton @click="openDeleteModal(patient)" class="">
+                        <p class="sm:hidden">Del</p>
+                        <p class="hidden sm:block">Delete</p>
+                      </DangerButton>
                     </div>
                   </div>
                 </div>
